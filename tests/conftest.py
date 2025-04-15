@@ -44,7 +44,29 @@ TEST_DATABASE_URL = settings.database_url.replace("postgresql://", "postgresql+a
 engine = create_async_engine(TEST_DATABASE_URL, echo=settings.debug)
 AsyncTestingSessionLocal = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 AsyncSessionScoped = scoped_session(AsyncTestingSessionLocal)
+import pytest
 
+from app.services.jwt_service import create_access_token
+
+@pytest.fixture
+async def admin_token(admin_user):
+    token = create_access_token(data={"sub": str(admin_user.id), "role": admin_user.role.value})
+    return token
+
+@pytest.fixture
+async def manager_token(manager_user):
+    token = create_access_token(data={"sub": str(manager_user.id), "role": manager_user.role.value})
+    return token
+
+@pytest.fixture
+async def user_token(user):
+    token = create_access_token(data={"sub": str(user.id), "role": user.role.value})
+    return token
+
+@pytest.fixture
+async def verified_user_token(verified_user):
+    token = create_access_token(data={"sub": str(verified_user.id), "role": verified_user.role.value})
+    return token
 
 @pytest.fixture
 def email_service():
@@ -215,11 +237,14 @@ async def manager_user(db_session: AsyncSession):
 @pytest.fixture
 def user_base_data():
     return {
-        "username": "john_doe_123",
         "email": "john.doe@example.com",
-        "full_name": "John Doe",
+        "nickname": "johnny_doe",
+        "first_name": "John",
+        "last_name": "Doe",
         "bio": "I am a software engineer with over 5 years of experience.",
-        "profile_picture_url": "https://example.com/profile_pictures/john_doe.jpg"
+        "profile_picture_url": "https://example.com/profile_pictures/john_doe.jpg",
+        "github_profile_url": "https://github.com/johndoe",
+        "linkedin_profile_url": "https://linkedin.com/in/johndoe"
     }
 
 @pytest.fixture
@@ -234,30 +259,53 @@ def user_base_data_invalid():
 
 
 @pytest.fixture
-def user_create_data(user_base_data):
-    return {**user_base_data, "password": "SecurePassword123!"}
+def user_create_data():
+    return {
+        "email": "john.doe@example.com",
+        "password": "SecurePassword123!",
+        "nickname": "johnny_doe",
+        "first_name": "John",
+        "last_name": "Doe",
+        "bio": "I am a software engineer with over 5 years of experience.",
+        "profile_picture_url": "https://example.com/profile_pictures/john_doe.jpg",
+        "github_profile_url": "https://github.com/johndoe",
+        "linkedin_profile_url": "https://linkedin.com/in/johndoe"
+    }
 
 @pytest.fixture
 def user_update_data():
     return {
         "email": "john.doe.new@example.com",
-        "full_name": "John H. Doe",
+        "first_name": "John H.",
+        "last_name": "Doe",
         "bio": "I specialize in backend development with Python and Node.js.",
-        "profile_picture_url": "https://example.com/profile_pictures/john_doe_updated.jpg"
+        "profile_picture_url": "https://example.com/profile_pictures/john_doe_updated.jpg",
+        "github_profile_url": "https://github.com/johndoe",
+        "linkedin_profile_url": "https://linkedin.com/in/johndoe"
     }
+
+from uuid import uuid4
+from datetime import datetime
 
 @pytest.fixture
 def user_response_data():
     return {
-        "id": "unique-id-string",
-        "username": "testuser",
+        "id": str(uuid4()),
         "email": "test@example.com",
-        "last_login_at": datetime.now(),
-        "created_at": datetime.now(),
-        "updated_at": datetime.now(),
+        "nickname": "test_user",
+        "first_name": "Test",
+        "last_name": "User",
+        "bio": "Sample bio",
+        "profile_picture_url": "https://example.com/profile.jpg",
+        "github_profile_url": "https://github.com/testuser",
+        "linkedin_profile_url": "https://linkedin.com/in/testuser",
+        "role": "AUTHENTICATED",
+        "last_login_at": datetime.utcnow(),
+        "created_at": datetime.utcnow(),
+        "updated_at": datetime.utcnow(),
         "links": []
     }
 
 @pytest.fixture
 def login_request_data():
-    return {"username": "john_doe_123", "password": "SecurePassword123!"}
+    return {"email": "john.doe@example.com", "password": "SecurePassword123!"}
