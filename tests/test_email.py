@@ -1,4 +1,5 @@
 from unittest.mock import AsyncMock, MagicMock
+import pytest
 
 @pytest.mark.asyncio
 async def test_send_markdown_email(mocker, email_service):
