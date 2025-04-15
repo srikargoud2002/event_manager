@@ -8,7 +8,8 @@ async def test_send_markdown_email(email_service):
     user_data = {
         "email": "test@example.com",
         "name": "Test User",
-        "verification_url": "http://example.com/verify?token=abc123"
+        "verification_url": "http://example.com/verify?token=abc123",
+        "verification_token": "abc123"  # <- required by template
     }
     await email_service.send_user_email(user_data, 'email_verification')
     # Manual verification in Mailtrap
