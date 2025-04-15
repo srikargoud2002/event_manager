@@ -4,18 +4,24 @@ from sqlalchemy import select
 from app.dependencies import get_settings
 from app.models.user_model import User
 from app.services.user_service import UserService
-
+from unittest.mock import AsyncMock, patch
 pytestmark = pytest.mark.asyncio
 
+@pytest.fixture
+def mock_send_user_email():
+    with patch("app.services.email_service.EmailService.send_user_email", new_callable=AsyncMock) as mock:
+        yield mock
+
 # Test creating a user with valid data
-async def test_create_user_with_valid_data(db_session, email_service):
+@pytest.mark.asyncio
+async def test_create_user_with_valid_data(db_session, email_service, mock_send_user_email):
     user_data = {
         "email": "valid_user@example.com",
-        "password": "ValidPassword123!",
+        "password": "ValidPassword123!"
     }
     user = await UserService.create(db_session, user_data, email_service)
-    assert user is not None
     assert user.email == user_data["email"]
+    mock_send_user_email.assert_awaited_once()
 
 # Test creating a user with invalid data
 async def test_create_user_with_invalid_data(db_session, email_service):
@@ -90,14 +96,15 @@ async def test_list_users_with_pagination(db_session, users_with_same_role_50_us
     assert users_page_1[0].id != users_page_2[0].id
 
 # Test registering a user with valid data
-async def test_register_user_with_valid_data(db_session, email_service):
+@pytest.mark.asyncio
+async def test_register_user_with_valid_data(db_session, email_service, mock_send_user_email):
     user_data = {
         "email": "register_valid_user@example.com",
-        "password": "RegisterValid123!",
+        "password": "RegisterValid123!"
     }
     user = await UserService.register_user(db_session, user_data, email_service)
-    assert user is not None
     assert user.email == user_data["email"]
+    mock_send_user_email.assert_awaited_once()
 
 # Test attempting to register a user with invalid data
 async def test_register_user_with_invalid_data(db_session, email_service):
