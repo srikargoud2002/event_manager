@@ -6,7 +6,7 @@ A FastAPI-based system with user authentication, email verification, and secure 
 
 ## ✅ Closed Issues and Fixes
 
-This repository documents five tracked and resolved issues, each with corresponding application code updates and tests:
+This repository documents **6** tracked and resolved issues, each with corresponding application code updates and tests:
 
 1. **[#9 - Verification Token Not Being Sent in Email](https://github.com/srikargoud2002/event_manager/issues/9)**  
    Issue involved missing token in the verification email sent to new users. Fixed by injecting `verification_token` in the template context. Now Manual verification also possible.
