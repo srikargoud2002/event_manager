@@ -50,7 +50,7 @@ All fixes were tested and merged into the `main` branch using GitHub’s pull re
 
 ## 🐳 Docker Image
 
-👉 **[DockerHub Image - events-api]([https://hub.docker.com/r/your-dockerhub-username/events-api](https://hub.docker.com/repository/docker/srikar2020/events-api/tags))**  
+👉 **[DockerHub Image - events-api]([https://hub.docker.com/r/your-dockerhub-username/events-api](https://hub.docker.com/repository/docker/srikar2020/events-api/tags)**  
 
 ---
 
