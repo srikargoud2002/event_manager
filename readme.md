@@ -60,9 +60,7 @@ This public image hosts the latest build of the FastAPI-based Event Manager appl
 
 ## 📚 Reflection
 
-This project helped me bridge theory and practice in building secure, production-ready APIs. I improved my knowledge of FastAPI's dependency injection, async SQLAlchemy for non-blocking database operations, and schema validation with Pydantic. One of the most rewarding experiences was debugging user-related issues like missing verification tokens or inconsistent schemas—these taught me the importance of end-to-end traceability from frontend to backend.
-
-Working with Docker and GitHub Actions introduced me to CI/CD in a realistic setting. Running Trivy vulnerability scans on every build reinforced how security needs to be baked into the development process, not treated as an afterthought. I also gained experience in writing concise GitHub issues and commit messages to ensure a maintainable codebase for future collaborators. These skills will be valuable as I continue working on team-based projects or in industry settings.
+This project helped me connect theory with real-world API development. I learned a lot about FastAPI, async database handling, and Pydantic validation. Debugging user issues and setting up CI/CD with Docker and GitHub Actions gave me hands-on experience with secure, maintainable deployments. These skills will be valuable for future team projects and industry work.
 
 ---
 
